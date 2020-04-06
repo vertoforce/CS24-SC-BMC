@@ -1,8 +1,8 @@
 # BMC Library
 
-This library provides functionality to communicate with the [Dell CS24-SC BMC](https://aramblinggeek.com/on-the-dell-cs24-sc-server/) "Embedded server manager."
+This library provides functionality to communicate with the [Dell CS24-SC](https://aramblinggeek.com/on-the-dell-cs24-sc-server/) BMC "Embedded server manager." (I did not write that article). [Ebay link](https://www.ebay.com/p/141699065)
 
-The BMC uses the outdated cipher suite `TLS_RSA_WITH_RC4_128_SHA`, making it difficult to connect to in modern web browsers.  I made this library to make it easy to automate some BMC actions.
+The BMC allows you to perform hardware functions on the server remotely such as turning the server on and off.  The BMC uses the outdated cipher suite `TLS_RSA_WITH_RC4_128_SHA`, making it difficult to connect to in modern web browsers.  I made this library to make it easy to automate some BMC actions.
 
 ## CLI Usage
 
