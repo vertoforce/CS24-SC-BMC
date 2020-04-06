@@ -1,4 +1,4 @@
-module bmc
+module github.com/vertoforce/CS24-SC-BMC
 
 go 1.13
 
