@@ -4,6 +4,22 @@ This library provides functionality to communicate with the Dell CS24-SC BMC "Em
 
 The BMC uses the outdated cipher suite `TLS_RSA_WITH_RC4_128_SHA`, making it difficult to connect to in modern web browsers.  I made this library to make it easy to automate some BMC actions.
 
+## CLI Usage
+
+```txt
+Usage of ./bmco:
+  -Action string
+        Action to perform on server. Options are: info, start, stop, reset (default "info")
+  -IP string
+        IP of server to connect to
+  -Password string
+        Password for BMC
+  -Port uint
+        Port of server to connect to (default 443)
+  -Username string
+        Username for BMC
+```
+
 ## Library Usage
 
 Example of connecting to and starting a server
@@ -13,7 +29,7 @@ c, _ := New(context.Background(), os.Getenv("IP"), 443, os.Getenv("USERNAME"), o
 c.Start(context.Background())
 ```
 
-## Implemented functions
+## BMC API Endpoints
 
 ### Login
 

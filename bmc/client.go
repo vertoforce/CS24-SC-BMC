@@ -14,8 +14,8 @@ type Client struct {
 	ip              string
 	phpsessidCookie *http.Cookie
 	httpClient      *http.Client
-	certificates    []*x509.Certificate
-	cipherSuite     uint16
+	Certificates    []*x509.Certificate
+	CipherSuite     uint16
 }
 
 // New create a new client, baseURL is for example `https://10.0.0.130`
@@ -23,7 +23,7 @@ func New(ctx context.Context, ip string, port uint16, username, password string)
 	// Get client
 	c := &Client{ip: ip}
 	var err error
-	c.httpClient, c.certificates, c.cipherSuite, err = createHTTPClient(ctx, ip, port)
+	c.httpClient, c.Certificates, c.CipherSuite, err = createHTTPClient(ctx, ip, port)
 	if err != nil {
 		return nil, err
 	}

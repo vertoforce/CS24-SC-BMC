@@ -22,6 +22,16 @@ func (c *Client) Start(ctx context.Context) error {
 	return c.SetPowerState(ctx, PowerStart)
 }
 
+// Stop the server
+func (c *Client) Stop(ctx context.Context) error {
+	return c.SetPowerState(ctx, PowerStop)
+}
+
+// Reset the server
+func (c *Client) Reset(ctx context.Context) error {
+	return c.SetPowerState(ctx, PowerReset)
+}
+
 // SetPowerState Sets the server's power state
 func (c *Client) SetPowerState(ctx context.Context, powerState PowerState) error {
 	form := url.Values{}
