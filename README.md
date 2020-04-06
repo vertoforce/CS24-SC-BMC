@@ -20,6 +20,12 @@ Usage of ./CS24-SC-BMC:
         Username for BMC
 ```
 
+Docker image available at `vertoforce/bmc-cs24-sc`
+
+```sh
+docker run vertoforce/bmc-cs24-sc -IP=10.0.0.10 -Username=root -Password=password -Action=info
+```
+
 ## Library Usage
 
 Example of connecting to and starting a server
