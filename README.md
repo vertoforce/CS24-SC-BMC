@@ -7,7 +7,7 @@ The BMC allows you to perform hardware functions on the server remotely such as 
 ## CLI Usage
 
 ```txt
-Usage of ./bmco:
+Usage of ./CS24-SC-BMC:
   -Action string
         Action to perform on server. Options are: info, start, stop, reset (default "info")
   -IP string

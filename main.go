@@ -1,11 +1,12 @@
 package main
 
 import (
-	"bmc/bmc"
 	"context"
 	"flag"
 	"os"
 	"os/signal"
+
+	"github.com/vertoforce/CS24-SC-BMC/bmc"
 
 	"github.com/sirupsen/logrus"
 )
