@@ -36,7 +36,7 @@ func (c *Client) Reset(ctx context.Context) error {
 func (c *Client) SetPowerState(ctx context.Context, powerState PowerState) error {
 	form := url.Values{}
 	form.Add("power_option", string(powerState))
-	req, err := c.buildRequest(ctx, "POST", fmt.Sprintf("https://%s/cgi_bin/ipmi_set_powercontrol.cgi", c.ip), strings.NewReader(form.Encode()))
+	req, err := c.buildRequest(ctx, "POST", fmt.Sprintf("https://%s:%d/cgi_bin/ipmi_set_powercontrol.cgi", c.ip, c.port), strings.NewReader(form.Encode()))
 	if err != nil {
 		return err
 	}

@@ -12,6 +12,7 @@ import (
 // Client to communicate with BCM
 type Client struct {
 	ip              string
+	port            uint16
 	phpsessidCookie *http.Cookie
 	httpClient      *http.Client
 	Certificates    []*x509.Certificate
@@ -21,7 +22,7 @@ type Client struct {
 // New create a new client, baseURL is for example `https://10.0.0.130`
 func New(ctx context.Context, ip string, port uint16, username, password string) (*Client, error) {
 	// Get client
-	c := &Client{ip: ip}
+	c := &Client{ip: ip, port: port}
 	var err error
 	c.httpClient, c.Certificates, c.CipherSuite, err = createHTTPClient(ctx, ip, port)
 	if err != nil {
@@ -32,7 +33,7 @@ func New(ctx context.Context, ip string, port uint16, username, password string)
 	form := url.Values{}
 	form.Add("quser", username)
 	form.Add("qpass", password)
-	req, err := c.buildRequest(ctx, "POST", fmt.Sprintf("https://%s/cgi_bin/login.cgi", ip), strings.NewReader(form.Encode()))
+	req, err := c.buildRequest(ctx, "POST", fmt.Sprintf("https://%s:%d/cgi_bin/login.cgi", ip, port), strings.NewReader(form.Encode()))
 	if err != nil {
 		return nil, err
 	}
