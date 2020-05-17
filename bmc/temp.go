@@ -49,11 +49,9 @@ func (c *Client) GetTemperature(ctx context.Context) (TempReadings, error) {
 		// For each row, find the values we care about
 		s.Find("tr").Each(func(t int, tr *goquery.Selection) {
 			tds := tr.Find("td")
-			fmt.Println(tds.Text())
 			if tds.Length() < 2 {
 				return
 			}
-			fmt.Println(tds.First().Text())
 			// Get label and value
 			label := strings.ToLower(strings.Trim(tds.First().Text(), " \t\n"))
 			value := strings.Trim(tds.First().Next().Text(), " \t\n")
