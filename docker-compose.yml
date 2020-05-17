@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+  monitor:
+    container_name: "monitor"
+    image: vertoforce/bmc-cs24-sc
+    build: .
+    environment:
+      - LOGFORMAT=json
+      - ACTION=monitor
+      - IP=$IP
+      - PORT=${PORT:-447}
+      - USERNAME=$USERNAME
+      - PASSWORD=$PASSWORD
+  
+  logspout:
+    # Use vertoforce image so we can use the `INCLUDE_CONTAINERS` env var
+    # This prevents us from sending logs from any other running docker containers
+    image: vertoforce/logspout-logstash
+    environment:
+      ROUTE_URIS: 'logstash+tcp://${LOGSTASH_SERVER_URL}'
+      LOGSTASH_FIELDS: "${LOGSTASH_FIELDS}"
+      INCLUDE_CONTAINERS: "monitor"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: on-failure

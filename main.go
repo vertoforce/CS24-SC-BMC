@@ -2,10 +2,11 @@ package main
 
 import (
 	"context"
-	"flag"
 	"os"
 	"os/signal"
+	"time"
 
+	"github.com/namsral/flag"
 	"github.com/vertoforce/CS24-SC-BMC/bmc"
 
 	"github.com/sirupsen/logrus"
@@ -15,11 +16,12 @@ var log *logrus.Logger
 
 // Flags
 var (
-	IP       string
-	Username string
-	Password string
-	Port     uint
-	Action   string
+	IP        string
+	Username  string
+	Password  string
+	Port      uint
+	Action    string
+	LogFormat string
 )
 
 func main() {
@@ -28,10 +30,16 @@ func main() {
 	// Parse flags
 	flag.StringVar(&IP, "IP", "", "IP of server to connect to")
 	flag.UintVar(&Port, "Port", 443, "Port of server to connect to")
-	flag.StringVar(&Action, "Action", "info", "Action to perform on server. Options are: info, start, stop, reset")
+	flag.StringVar(&Action, "Action", "info", "Action to perform on server. Options are: info, start, stop, reset, monitor")
 	flag.StringVar(&Username, "Username", "", "Username for BMC")
 	flag.StringVar(&Password, "Password", "", "Password for BMC")
+	flag.StringVar(&LogFormat, "LogFormat", "text", "The formatting of the logs, can be text or json.")
 	flag.Parse()
+
+	switch LogFormat {
+	case "json":
+		log.SetFormatter(&logrus.JSONFormatter{})
+	}
 
 	// Watch for program cancelation
 	ctx, cancel := context.WithCancel(context.Background())
@@ -88,7 +96,27 @@ func main() {
 			"CipherSuiteCode":     c.CipherSuite,
 			"Temperatures":        temperatures,
 		}).Info("Server Info")
+	case "monitor":
+		for {
+			monitor(context.Background(), log)
+		}
 	}
 
 	log.Info("Done")
+}
+
+// A single monitor run
+func monitor(ctx context.Context, log *logrus.Logger) {
+	defer time.Sleep(time.Second * 30)
+	// Connect
+	c, err := bmc.New(ctx, IP, uint16(Port), Username, Password)
+	if err != nil {
+		log.WithError(err).Error("Could not connect to server")
+		return
+	}
+
+	temps, err := c.GetTemperature(ctx)
+	log.WithFields(logrus.Fields{
+		"Temperature": temps,
+	}).Info("Server Info")
 }

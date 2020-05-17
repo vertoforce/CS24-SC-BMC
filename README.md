@@ -6,10 +6,12 @@ The BMC allows you to perform hardware functions on the server remotely such as 
 
 ## CLI Usage
 
+Each flag can also be set as an environment variable (all caps)
+
 ```txt
 Usage of ./CS24-SC-BMC:
   -Action string
-        Action to perform on server. Options are: info, start, stop, reset (default "info")
+        Action to perform on server. Options are: info, start, stop, reset, monitor (default "info")
   -IP string
         IP of server to connect to
   -Password string
@@ -35,6 +37,16 @@ c, _ := New(context.Background(), os.Getenv("IP"), 443, os.Getenv("USERNAME"), o
 c.Start(context.Background())
 ```
 
+## Server monitoring
+
+This tool can also be used to monitor a dell cs24-sc server.  If you set the `action` to `monitor`, every 30 seconds it will log out information about the server.  You can capture these logs and send them to an ELK server using the provided docker-compose.yml.
+
+To bring up the docker stack, make sure you set all the env vars defined in the docker-compose.yml file then run the following command.
+
+```sh
+docker stack deploy -c docker-compose.yml server-monitor
+```
+
 ## BMC API Endpoints
 
 ### Login
@@ -56,7 +68,7 @@ Sets the power state of the server (start, stop, reset).
 - Body Parameters (`application/x-www-form-urlencoded`)
   - `power_option` - One of `poweron`, `poweroff`, `powerreboot`
 
-## Get temperatures
+### Get temperatures
 
 - URL: `/cgi_bin/ipmi_get_info.cgi?operation=temperature`
 - Method: `GET`
