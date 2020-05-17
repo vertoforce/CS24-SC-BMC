@@ -44,8 +44,8 @@ Logs in to the BMC.  The session cookie is `PHPSESSID`
 - URL: `/cgi_bin/login.cgi`
 - Method: `POST`
 - Body Parameters (`application/x-www-form-urlencoded`)
-    - `quser` - string
-    - `qpass` - string
+  - `quser` - string
+  - `qpass` - string
 
 ### Set Power Control
 
@@ -54,7 +54,14 @@ Sets the power state of the server (start, stop, reset).
 - URL: `/cgi_bin/ipmi_set_powercontrol.cgi`
 - Method: `POST`
 - Body Parameters (`application/x-www-form-urlencoded`)
-    - `power_option` - One of `poweron`, `poweroff`, `powerreboot`
+  - `power_option` - One of `poweron`, `poweroff`, `powerreboot`
+
+## Get temperatures
+
+- URL: `/cgi_bin/ipmi_get_info.cgi?operation=temperature`
+- Method: `GET`
+
+Then parse out the temperatures from the table.  See [bmc/temp.go](bmc/temp.go) for implementation.
 
 ## Get certificate of your server
 
