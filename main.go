@@ -82,9 +82,11 @@ func main() {
 		for _, certificate := range c.Certificates {
 			certificateSubjects = append(certificateSubjects, certificate.Subject.String())
 		}
+		temperatures, _ := c.GetTemperature(ctx)
 		log.WithFields(logrus.Fields{
 			"CertificateSubjects": certificateSubjects,
 			"CipherSuiteCode":     c.CipherSuite,
+			"Temperatures":        temperatures,
 		}).Info("Server Info")
 	}
 
