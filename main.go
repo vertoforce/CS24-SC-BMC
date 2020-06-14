@@ -99,6 +99,11 @@ func main() {
 	case "monitor":
 		for {
 			monitor(ctx, log)
+			select {
+			case <-ctx.Done():
+				return
+			default:
+			}
 		}
 	}
 
