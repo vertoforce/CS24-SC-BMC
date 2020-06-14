@@ -60,7 +60,7 @@ func main() {
 
 	// Connect to server
 	log.WithFields(logrus.Fields{"IP": IP, "Port": Port}).Info("Connecting to server")
-	c, err := bmc.New(context.Background(), IP, uint16(Port), Username, Password)
+	c, err := bmc.New(ctx, IP, uint16(Port), Username, Password)
 	if err != nil {
 		log.WithError(err).Error("Failed to connect to BMC server")
 		return
@@ -98,7 +98,7 @@ func main() {
 		}).Info("Server Info")
 	case "monitor":
 		for {
-			monitor(context.Background(), log)
+			monitor(ctx, log)
 		}
 	}
 
