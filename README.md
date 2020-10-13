@@ -24,8 +24,16 @@ Usage of ./CS24-SC-BMC:
 
 Docker image available at `vertoforce/bmc-cs24-sc`
 
+For example, to **get info from your server**:
+
 ```sh
 docker run vertoforce/bmc-cs24-sc -IP=10.0.0.10 -Username=root -Password=password -Action=info
+```
+
+Or **turn on your server**:
+
+```sh
+docker run vertoforce/bmc-cs24-sc -IP=10.0.0.10 -Username=root -Password=password -Action=start
 ```
 
 ## Library Usage
