@@ -2,8 +2,10 @@ package main
 
 import (
 	"context"
+	"io/ioutil"
 	"os"
 	"os/signal"
+	"strings"
 	"time"
 
 	"github.com/namsral/flag"
@@ -16,12 +18,13 @@ var log *logrus.Logger
 
 // Flags
 var (
-	IP        string
-	Username  string
-	Password  string
-	Port      uint
-	Action    string
-	LogFormat string
+	IP             string
+	Username       string
+	Password       string
+	PasswordStdint bool
+	Port           uint
+	Action         string
+	LogFormat      string
 )
 
 func main() {
@@ -33,6 +36,7 @@ func main() {
 	flag.StringVar(&Action, "Action", "info", "Action to perform on server. Options are: info, start, stop, reset, monitor")
 	flag.StringVar(&Username, "Username", "", "Username for BMC")
 	flag.StringVar(&Password, "Password", "", "Password for BMC")
+	flag.BoolVar(&PasswordStdint, "PasswordStdin", false, "Read password from stdin")
 	flag.StringVar(&LogFormat, "LogFormat", "text", "The formatting of the logs, can be text or json.")
 	flag.Parse()
 
@@ -57,6 +61,16 @@ func main() {
 		case <-ctx.Done():
 		}
 	}()
+
+	// Set password
+	if PasswordStdint {
+		PasswordRaw, err := ioutil.ReadAll(os.Stdin)
+		if err != nil {
+			log.WithError(err).Fatal("Error reading password from stdin")
+		}
+		Password = string(PasswordRaw)
+		Password = strings.Trim(Password, "\n \t")
+	}
 
 	// Connect to server
 	log.WithFields(logrus.Fields{"IP": IP, "Port": Port}).Info("Connecting to server")
