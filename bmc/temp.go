@@ -33,6 +33,7 @@ func (c *Client) GetTemperature(ctx context.Context) (TempReadings, error) {
 	if err != nil {
 		return nil, err
 	}
+	defer resp.Body.Close()
 
 	doc, err := goquery.NewDocumentFromReader(resp.Body)
 	if err != nil {

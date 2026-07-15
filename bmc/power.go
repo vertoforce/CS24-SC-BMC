@@ -45,6 +45,7 @@ func (c *Client) SetPowerState(ctx context.Context, powerState PowerState) error
 	if err != nil {
 		return err
 	}
+	defer resp.Body.Close()
 
 	if resp.StatusCode != 200 {
 		return fmt.Errorf("invalid response code: %d", resp.StatusCode)
