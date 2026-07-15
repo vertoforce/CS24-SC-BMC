@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-// Client to communicate with BCM
+// Client to communicate with BMC
 type Client struct {
 	ip              string
 	port            uint16
@@ -42,6 +42,7 @@ func New(ctx context.Context, ip string, port uint16, username, password string)
 	if err != nil {
 		return nil, err
 	}
+	defer resp.Body.Close()
 
 	if resp.StatusCode != 200 {
 		return nil, fmt.Errorf("bad response code: %d", resp.StatusCode)
@@ -56,6 +57,9 @@ func New(ctx context.Context, ip string, port uint16, username, password string)
 		if cookie.Name == "PHPSESSID" {
 			c.phpsessidCookie = cookie
 		}
+	}
+	if c.phpsessidCookie == nil {
+		return nil, fmt.Errorf("login response did not contain a PHPSESSID cookie")
 	}
 
 	return c, nil
